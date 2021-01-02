@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       //Si l'oiseau touche le sol
-      // Si l'oiseau touche un obstacle.
+      // Si l'oiseau touche un obstacle
       if (
         (obstacleLeft > 200 &&
           obstacleLeft < 280 &&

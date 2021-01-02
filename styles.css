@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+.game-container {
+  width: 500px;
+  height: 730px;
+  position: absolute;
+}
+
+.sky {
+  background-color: #ecf2f9;
+  width: 500px;
+  height: 580px;
+  position: absolute;
+}
+
+.ground {
+  background-color: burlywood;
+  width: 500px;
+  height: 150px;
+  position: absolute;
+  top: 580px;
+}
+
+.bird {
+  background-image: url(/img/aEgoodBoy.gif);
+  position: absolute;
+  width: 50px;
+  height: 64px;
+  z-index: 99;
+}
+
+.obstacle {
+  background-color: chartreuse;
+  width: 60px;
+  height: 300px;
+  position: absolute;
+}
+
+.topObstacle {
+  background-color: chartreuse;
+  width: 60px;
+  height: 300px;
+  position: absolute;
+}

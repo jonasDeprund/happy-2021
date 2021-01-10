@@ -40,9 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Create obstacle
   function generateObstacle() {
     let obstacleLeft = 500
-    let randomHeight = Math.random() * 60
-    let obstacleBottom = randomHeight
-    // Do the mecanisme
+    //let randomHeight = Math.random() * 60
+    let obstacleBottom = 150
+
+    //mecanisme
     const obstacle = document.createElement('div')
     const topObstacle = document.createElement('div')
     if (!isGameOver) {
@@ -74,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         (obstacleLeft > 200 &&
           obstacleLeft < 280 &&
           birdLeft === 220 &&
-          (birdBottom < obstacleBottom + 153 ||
+          (birdBottom < obstacleBottom + 0 ||
             birdBottom > obstacleBottom + gap - 200)) ||
         birdBottom === 0
       ) {

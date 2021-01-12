@@ -132,10 +132,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100vh;
 }
 
 .game-container {
-  transform: translateY(75%);
   width: 1024px;
   height: 768px;
   position: absolute;
@@ -173,4 +173,8 @@ body {
 }
 
 .topObstacle {
+  background-image: url(/img/obstacle.png);
+  width: 170px;
+  height: 180px;
+  position: absolute;
 }

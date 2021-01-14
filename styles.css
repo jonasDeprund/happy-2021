@@ -135,6 +135,15 @@ body {
   height: 100vh;
 }
 
+.start-screen {
+  background-color: darkblue;
+  width: 1024px;
+  height: 768px;
+  position: absolute;
+  opacity: 80%;
+  z-index: 99;
+}
+
 .game-container {
   width: 1024px;
   height: 768px;
@@ -162,7 +171,7 @@ body {
   position: absolute;
   width: 70px;
   height: 89px;
-  z-index: 99;
+  z-index: 1;
 }
 
 .bottom_obstacle {

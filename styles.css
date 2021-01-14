@@ -165,14 +165,14 @@ body {
   z-index: 99;
 }
 
-.obstacle {
+.bottom_obstacle {
   background-image: url(/img/obstacle.png);
   width: 170px;
   height: 180px;
   position: absolute;
 }
 
-.topObstacle {
+.top_obstacle {
   background-image: url(/img/obstacle.png);
   width: 170px;
   height: 180px;

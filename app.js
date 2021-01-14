@@ -40,36 +40,41 @@ document.addEventListener('DOMContentLoaded', () => {
   // Create obstacle
   function generateObstacle() {
     // Create random position
-    let randomPositionY = Math.random() * 200
-    let randomPositionX = Math.random() * 100
+    let obstacleLeft = 700
+    let randomHeight = Math.random() * 100
 
-    let obstacleLeft = randomPositionY + 500
-    let obstacleBottom = randomPositionX
+    let obstacleBottom = randomHeight
 
     //mecanisme
-    const obstacle = document.createElement('div')
     const topObstacle = document.createElement('div')
+    const bottomObstacle = document.createElement('div')
+
     if (!isGameOver) {
-      obstacle.classList.add('obstacle')
-      topObstacle.classList.add('topObstacle')
+      topObstacle.classList.add('top_obstacle')
+      bottomObstacle.classList.add('bottom_obstacle')
     }
-    gameDisplay.appendChild(obstacle)
+
+    //Ajout des divs
     gameDisplay.appendChild(topObstacle)
-    obstacle.style.left = obstacleLeft + 'px'
-    topObstacle.style.left = obstacleLeft + randomPositionY + 'px'
-    obstacle.style.bottom = obstacleBottom + 'px'
-    topObstacle.style.bottom = obstacleBottom + gap + 'px'
+    gameDisplay.appendChild(bottomObstacle)
+
+    //Position des divs
+    topObstacle.style.left = obstacleLeft + 'px'
+    bottomObstacle.style.left = obstacleLeft + 'px'
+
+    topObstacle.style.bottom = obstacleBottom + 'px'
+    bottomObstacle.style.bottom = obstacleBottom + gap + 'px'
 
     // Move obstacle
     function moveObstacle() {
       obstacleLeft -= 2
-      obstacle.style.left = obstacleLeft + 'px'
       topObstacle.style.left = obstacleLeft + 'px'
+      bottomObstacle.style.left = obstacleLeft + 'px'
 
       if (obstacleLeft === 0) {
         clearInterval(timerId)
-        gameDisplay.removeChild(obstacle)
         gameDisplay.removeChild(topObstacle)
+        gameDisplay.removeChild(bottomObstacle)
       }
 
       //Si l'oiseau touche le sol
@@ -78,7 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
         (obstacleLeft > 110 &&
           obstacleLeft < 280 &&
           birdLeft === 220 &&
-          birdBottom < obstacleBottom + 180) ||
+          (birdBottom < obstacleBottom + 180 ||
+            birdBottom > obstacleBottom + gap - 50)) ||
         birdBottom === 0
       ) {
         gameOver()

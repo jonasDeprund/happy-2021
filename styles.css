@@ -135,13 +135,17 @@ body {
   height: 100vh;
 }
 
-.start-screen {
+/* .start-screen {
   background-color: darkblue;
   width: 1024px;
   height: 768px;
   position: absolute;
   opacity: 80%;
   z-index: 99;
+} */
+
+.currentscore{
+  
 }
 
 .game-container {

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const bird = document.querySelector('.bird')
   const gameDisplay = document.querySelector('.game-container')
   const ground = document.querySelector('.ground')
+  const currentScore = document.querySelector('.currentscore')
 
   // Initialise elements
   let birdLeft = 220
@@ -11,11 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
   let isGameOver = false
   let gap = 430
 
+  // Score players
+  let bestscore = 0
+  let printCurrentScore = 0
+
   // lancer la fontion du debut du jeu
   function startGame() {
     birdBottom -= gravity
     bird.style.bottom = birdBottom + 'px'
     bird.style.left = birdLeft + 'px'
+
+    currentScore.innerHTML = `Score actuel ${printCurrentScore}`
+    if (!isGameOver) {
+      printCurrentScore++
+    }
   }
 
   // lancer la fonction
@@ -32,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function jump() {
     if (birdBottom < 650) birdBottom += 50
     bird.style.bottom = birdBottom + 'px'
-    console.log(birdBottom)
   }
 
   document.addEventListener('keyup', control)
@@ -67,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Move obstacle
     function moveObstacle() {
-      obstacleLeft -= 2
+      obstacleLeft -= 4
       topObstacle.style.left = obstacleLeft + 'px'
       bottomObstacle.style.left = obstacleLeft + 'px'
 
@@ -101,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Fonction du gameover
   function gameOver() {
     clearInterval(gameTimerId)
-    //console.log('game over')
     isGameOver = true
     document.removeEventListener('keyUp', control)
   }

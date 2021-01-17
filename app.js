@@ -23,9 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     bird.style.left = birdLeft + 'px'
 
     currentScore.innerHTML = `Score actuel ${printCurrentScore}`
-    if (!isGameOver) {
-      printCurrentScore++
-    }
   }
 
   // lancer la fonction
@@ -84,6 +81,12 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(timerId)
         gameDisplay.removeChild(topObstacle)
         gameDisplay.removeChild(bottomObstacle)
+      }
+
+      // Mettre à jour le score actuel
+      if (obstacleLeft <= 0) {
+        printCurrentScore++
+        console.log(obstacleLeft)
       }
 
       //Si l'oiseau touche le sol

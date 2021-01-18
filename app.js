@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameDisplay = document.querySelector('.game-container')
   const ground = document.querySelector('.ground')
   const currentScore = document.querySelector('.currentscore')
+  const bestScore = document.querySelector('.bestscore')
 
   // Initialise elements
   let birdLeft = 220
@@ -13,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let gap = 430
 
   // Score players
-  let bestscore = 0
   let printCurrentScore = 0
+  let printBestScore = 0
 
   // lancer la fontion du debut du jeu
   function startGame() {
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bird.style.left = birdLeft + 'px'
 
     currentScore.innerHTML = `Score actuel ${printCurrentScore}`
+    bestScore.innerHTML = `Meilleur score ${printBestScore}`
   }
 
   // lancer la fonction
@@ -86,7 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Mettre à jour le score actuel
       if (obstacleLeft <= 0) {
         printCurrentScore++
-        console.log(obstacleLeft)
+
+        printBestScore = Math.max(printBestScore, printCurrentScore)
       }
 
       //Si l'oiseau touche le sol

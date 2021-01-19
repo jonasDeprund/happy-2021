@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ground = document.querySelector('.ground')
   const currentScore = document.querySelector('.currentscore')
   const bestScore = document.querySelector('.bestscore')
+  let startText = document.querySelector('.start-text')
 
   // Initialise elements
   let birdLeft = 220
@@ -102,6 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
             birdBottom > obstacleBottom + gap - 50)) ||
         birdBottom === 0
       ) {
+        gameDisplay.removeChild(topObstacle)
+        gameDisplay.removeChild(bottomObstacle)
         gameOver()
         clearInterval(timerId)
       }
@@ -118,5 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
     clearInterval(gameTimerId)
     isGameOver = true
     document.removeEventListener('keyUp', control)
+
+    bird.style.bottom = 384 + 'px'
+    bird.style.left = 512 + 'px'
+
+    startText.innerHTML = `Appuyer sur la barre d'espace pour commencer le jeu`
+    document.addEventListener('keyUp', () => {
+      startGame()
+    })
   }
 })

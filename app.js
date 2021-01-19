@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let birdLeft = 220
   let birdBottom = 500
   let gravity = 3
-  let isGameOver = false
+  let isGameOver = true
   let gap = 430
 
   // Score players
@@ -19,12 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let printBestScore = 0
 
   // SETUP SCREEN
-  bird.style.bottom = 384 + 'px'
-  bird.style.left = 512 + 'px'
+  if (isGameOver === true) {
+    bird.style.bottom = 384 + 'px'
+    bird.style.left = 512 + 'px'
 
-  startText.innerHTML = `Appuyer sur la barre d'espace pour commencer le jeu`
+    startText.innerHTML = `Appuyer sur la barre d'espace pour commencer le jeu`
+  }
 
-  document.addEventListener('click', () => {
+  if (isGameOver === false) {
     function startGame() {
       birdBottom -= gravity
       bird.style.bottom = birdBottom + 'px'
@@ -109,11 +111,11 @@ document.addEventListener('DOMContentLoaded', () => {
         ) {
           gameDisplay.removeChild(topObstacle)
           gameDisplay.removeChild(bottomObstacle)
-          gameOver()
+          setup()
           clearInterval(timerId)
         }
 
-        function gameOver() {
+        function setup() {
           clearInterval(gameTimerId)
           isGameOver = true
           console.log(isGameOver)
@@ -124,5 +126,5 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isGameOver) setTimeout(generateObstacle, 4000)
     }
     generateObstacle()
-  })
+  }
 })

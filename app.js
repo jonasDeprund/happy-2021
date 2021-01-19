@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialise elements
   let birdLeft = 220
   let birdBottom = 500
-  let gravity = 2
+  let gravity = 3
   let isGameOver = false
   let gap = 430
 
@@ -18,116 +18,111 @@ document.addEventListener('DOMContentLoaded', () => {
   let printCurrentScore = 0
   let printBestScore = 0
 
-  // lancer la fontion du debut du jeu
-  function startGame() {
-    birdBottom -= gravity
-    bird.style.bottom = birdBottom + 'px'
-    bird.style.left = birdLeft + 'px'
+  // SETUP SCREEN
+  bird.style.bottom = 384 + 'px'
+  bird.style.left = 512 + 'px'
 
-    currentScore.innerHTML = `Score actuel ${printCurrentScore}`
-    bestScore.innerHTML = `Meilleur score ${printBestScore}`
-  }
+  startText.innerHTML = `Appuyer sur la barre d'espace pour commencer le jeu`
 
-  // lancer la fonction
-  let gameTimerId = setInterval(startGame, 20)
-  //clearInterval(timerId)
+  document.addEventListener('click', () => {
+    function startGame() {
+      birdBottom -= gravity
+      bird.style.bottom = birdBottom + 'px'
+      bird.style.left = birdLeft + 'px'
 
-  // Add contols keyboard
-  function control(e) {
-    if (e.keyCode === 32) {
-      jump()
-    }
-  }
-
-  function jump() {
-    if (birdBottom < 650) birdBottom += 50
-    bird.style.bottom = birdBottom + 'px'
-  }
-
-  document.addEventListener('keyup', control)
-
-  // Create obstacle
-  function generateObstacle() {
-    // Create random position
-    let obstacleLeft = 700
-    let randomHeight = Math.random() * 100
-
-    let obstacleBottom = randomHeight
-
-    //mecanisme
-    const topObstacle = document.createElement('div')
-    const bottomObstacle = document.createElement('div')
-
-    if (!isGameOver) {
-      topObstacle.classList.add('top_obstacle')
-      bottomObstacle.classList.add('bottom_obstacle')
+      currentScore.innerHTML = `Score actuel ${printCurrentScore}`
+      bestScore.innerHTML = `Meilleur score ${printBestScore}`
     }
 
-    //Ajout des divs
-    gameDisplay.appendChild(topObstacle)
-    gameDisplay.appendChild(bottomObstacle)
+    // lancer la fonction
+    let gameTimerId = setInterval(startGame, 20)
 
-    //Position des divs
-    topObstacle.style.left = obstacleLeft + 'px'
-    bottomObstacle.style.left = obstacleLeft + 'px'
+    // Add contols keyboard
+    function control(e) {
+      if (e.keyCode === 32) {
+        jump()
+      }
+    }
 
-    topObstacle.style.bottom = obstacleBottom + 'px'
-    bottomObstacle.style.bottom = obstacleBottom + gap + 'px'
+    function jump() {
+      if (birdBottom < 650) birdBottom += 70
+      bird.style.bottom = birdBottom + 'px'
+    }
 
-    // Move obstacle
-    function moveObstacle() {
-      obstacleLeft -= 4
+    document.addEventListener('keyup', control)
+
+    function generateObstacle() {
+      // Create random position
+      let obstacleLeft = 700
+      let randomHeight = Math.random() * 100
+
+      let obstacleBottom = randomHeight
+
+      //mecanisme
+      const topObstacle = document.createElement('div')
+      const bottomObstacle = document.createElement('div')
+
+      if (!isGameOver) {
+        topObstacle.classList.add('top_obstacle')
+        bottomObstacle.classList.add('bottom_obstacle')
+      }
+
+      //Ajout des divs
+      gameDisplay.appendChild(topObstacle)
+      gameDisplay.appendChild(bottomObstacle)
+
+      //Position des divs
       topObstacle.style.left = obstacleLeft + 'px'
       bottomObstacle.style.left = obstacleLeft + 'px'
 
-      if (obstacleLeft === 0) {
-        clearInterval(timerId)
-        gameDisplay.removeChild(topObstacle)
-        gameDisplay.removeChild(bottomObstacle)
+      topObstacle.style.bottom = obstacleBottom + 'px'
+      bottomObstacle.style.bottom = obstacleBottom + gap + 'px'
+
+      // Move obstacle
+      function moveObstacle() {
+        obstacleLeft -= 3
+        topObstacle.style.left = obstacleLeft + 'px'
+        bottomObstacle.style.left = obstacleLeft + 'px'
+
+        if (obstacleLeft <= 0) {
+          clearInterval(timerId)
+          gameDisplay.removeChild(topObstacle)
+          gameDisplay.removeChild(bottomObstacle)
+        }
+
+        // Mettre à jour le score actuel
+        if (obstacleLeft <= 0) {
+          printCurrentScore++
+
+          printBestScore = Math.max(printBestScore, printCurrentScore)
+        }
+
+        //Si l'oiseau touche le sol
+        // Si l'oiseau touche un obstacle
+        if (
+          (obstacleLeft > 110 &&
+            obstacleLeft < 280 &&
+            birdLeft === 220 &&
+            (birdBottom < obstacleBottom + 180 ||
+              birdBottom > obstacleBottom + gap - 50)) ||
+          birdBottom === 0
+        ) {
+          gameDisplay.removeChild(topObstacle)
+          gameDisplay.removeChild(bottomObstacle)
+          gameOver()
+          clearInterval(timerId)
+        }
+
+        function gameOver() {
+          clearInterval(gameTimerId)
+          isGameOver = true
+          console.log(isGameOver)
+        }
       }
 
-      // Mettre à jour le score actuel
-      if (obstacleLeft <= 0) {
-        printCurrentScore++
-
-        printBestScore = Math.max(printBestScore, printCurrentScore)
-      }
-
-      //Si l'oiseau touche le sol
-      // Si l'oiseau touche un obstacle
-      if (
-        (obstacleLeft > 110 &&
-          obstacleLeft < 280 &&
-          birdLeft === 220 &&
-          (birdBottom < obstacleBottom + 180 ||
-            birdBottom > obstacleBottom + gap - 50)) ||
-        birdBottom === 0
-      ) {
-        gameDisplay.removeChild(topObstacle)
-        gameDisplay.removeChild(bottomObstacle)
-        gameOver()
-        clearInterval(timerId)
-      }
+      let timerId = setInterval(moveObstacle, 20)
+      if (!isGameOver) setTimeout(generateObstacle, 4000)
     }
-
-    let timerId = setInterval(moveObstacle, 20)
-    if (!isGameOver) setTimeout(generateObstacle, 4000)
-  }
-
-  generateObstacle()
-
-  // Fonction du gameover
-  function gameOver() {
-    clearInterval(gameTimerId)
-    isGameOver = true
-    document.removeEventListener('keyUp', control)
-
-    bird.style.bottom = 384 + 'px'
-    bird.style.left = 512 + 'px'
-
-    startText.innerHTML = `Appuyer sur la barre d'espace pour commencer le jeu`
-    document.addEventListener('keyUp', () => {
-      startGame()
-    })
-  }
+    generateObstacle()
+  })
 })

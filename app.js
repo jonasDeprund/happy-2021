@@ -5,29 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const ground = document.querySelector('.ground')
   const currentScore = document.querySelector('.currentscore')
   const bestScore = document.querySelector('.bestscore')
-  let startText = document.querySelector('.start-text')
+  const setupScreen = document.querySelector('.setup-text')
 
   // Initialise elements
   let birdLeft = 220
   let birdBottom = 500
   let gravity = 3
-  let isGameOver = true
+  let isGameOver = false
   let gap = 430
 
   // Score players
   let printCurrentScore = 0
   let printBestScore = 0
 
-  // SETUP SCREEN
-  if (isGameOver === true) {
-    bird.style.bottom = 384 + 'px'
-    bird.style.left = 512 + 'px'
+  //GAME
 
-    startText.innerHTML = `Appuyer sur la barre d'espace pour commencer le jeu`
-  }
-
-  if (isGameOver === false) {
-    function startGame() {
+  function playingGame() {
+    function initialise() {
       birdBottom -= gravity
       bird.style.bottom = birdBottom + 'px'
       bird.style.left = birdLeft + 'px'
@@ -37,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // lancer la fonction
-    let gameTimerId = setInterval(startGame, 20)
+    let gameTimerId = setInterval(initialise, 20)
 
     // Add contols keyboard
     function control(e) {
@@ -111,14 +105,14 @@ document.addEventListener('DOMContentLoaded', () => {
         ) {
           gameDisplay.removeChild(topObstacle)
           gameDisplay.removeChild(bottomObstacle)
-          setup()
+          gameOver()
           clearInterval(timerId)
         }
 
-        function setup() {
+        function gameOver() {
           clearInterval(gameTimerId)
           isGameOver = true
-          console.log(isGameOver)
+          console.log('Fin du jeu')
         }
       }
 
@@ -127,4 +121,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     generateObstacle()
   }
+
+  function setup() {
+    bird.style.bottom = 384 + 'px'
+    bird.style.left = 512 + 'px'
+
+    document.addEventListener('click', function () {
+      playingGame()
+    })
+  }
+
+  setup()
 })

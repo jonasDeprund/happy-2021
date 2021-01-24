@@ -148,6 +148,10 @@ body {
   align-items: center;
   justify-content: center;
   background-color: rgba(236, 242, 249, 0.7);
+  display: none;
+}
+
+.visible {
   display: inherit;
 }
 
@@ -162,7 +166,7 @@ body {
   font-family: 'decibel_v0.2_triallouderer';
   font-size: 2.4rem;
   color: #1c316b;
-  margin-top: 40px;
+  margin-top: 70px;
 }
 
 .button {
@@ -229,6 +233,7 @@ body {
   width: 170px;
   height: 180px;
   position: absolute;
+  z-index: 99;
 }
 
 .top_obstacle {
@@ -236,4 +241,5 @@ body {
   width: 170px;
   height: 180px;
   position: absolute;
+  z-index: 99;
 }

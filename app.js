@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // GAME
   function setupGame() {
+    gameOverScreen.classList.remove('visible')
     setupScreen.classList.add('visible')
     bird.style.bottom = 320 + 'px'
     bird.style.left = 475 + 'px'
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function playGame() {
     gamePlaying === true
+    setupScreen.classList.remove('visible')
     function startGame() {
       birdBottom -= gravity
       bird.style.bottom = birdBottom + 'px'
@@ -112,6 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ) {
           gameOver()
           clearInterval(timerId)
+          gameDisplay.removeChild(topObstacle)
+          gameDisplay.removeChild(bottomObstacle)
         }
       }
       let timerId = setInterval(moveObstacle, 20)
@@ -126,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.removeEventListener('keyup', control)
       document.addEventListener('keyup', (event) => {
         gameOverScreen.classList.remove('visible')
-
         setupGame()
       })
     }

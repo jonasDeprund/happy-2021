@@ -6,13 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentScore = document.querySelector('.currentscore')
   const bestScore = document.querySelector('.bestscore')
   const setupScreen = document.querySelector('.setup-screen')
+  const gameOverScreen = document.querySelector('.gameover-screen')
 
   // Initialise elements
   let birdLeft = 220
   let birdBottom = 500
   let gravity = 3
-  let gamePlaying = false
   let gap = 430
+  let gamePlaying = false
 
   // Score players
   let printCurrentScore = 0
@@ -20,25 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //SETTUP
 
-  document.addEventListener('click', function () {
-    if ((gamePlaying = true)) {
-      setupScreen.classList.remove('visible')
-      playGame()
+  document.addEventListener('keyup', (event) => {
+    if (event.keyCode === 13) {
+      if (gamePlaying === true) {
+        setupScreen.classList.remove('visible')
+        document.removeEventListener('keyup', event)
+        playGame()
+      }
     }
   })
-
-  function control(e) {
-    if (e.keyCode === 32) {
-      jump()
-    }
-  }
-
-  function jump() {
-    if (birdBottom < 650) birdBottom += 70
-    bird.style.bottom = birdBottom + 'px'
-  }
-
-  document.addEventListener('keyup', control)
 
   // GAME
   function setupGame() {
@@ -49,17 +40,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function playGame() {
-    gamePlaying = true
-    function initialise() {
+    gamePlaying === true
+    function startGame() {
       birdBottom -= gravity
       bird.style.bottom = birdBottom + 'px'
       bird.style.left = birdLeft + 'px'
-
-      currentScore.innerHTML = `Score actuel ${printCurrentScore}`
-      bestScore.innerHTML = `Meilleur score ${printBestScore}`
     }
 
-    let gameTimerId = setInterval(initialise, 20)
+    let gameTimerId = setInterval(startGame, 20)
+
+    function control(e) {
+      if (e.keyCode === 32) {
+        jump()
+      }
+    }
+
+    function jump() {
+      if (birdBottom < 650) birdBottom += 70
+      bird.style.bottom = birdBottom + 'px'
+    }
+
+    document.addEventListener('keyup', control)
 
     function generateObstacle() {
       let obstacleLeft = 700
@@ -73,6 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (gamePlaying) {
         topObstacle.classList.add('top_obstacle')
         bottomObstacle.classList.add('bottom_obstacle')
+
+        currentScore.innerHTML = `Score actuel ${printCurrentScore}`
+        bestScore.innerHTML = `Meilleur score ${printBestScore}`
       }
 
       gameDisplay.appendChild(topObstacle)
@@ -89,38 +93,43 @@ document.addEventListener('DOMContentLoaded', () => {
         topObstacle.style.left = obstacleLeft + 'px'
         bottomObstacle.style.left = obstacleLeft + 'px'
 
-        if (obstacleLeft === 0) {
+        if (obstacleLeft <= 0) {
           clearInterval(timerId)
           gameDisplay.removeChild(topObstacle)
           gameDisplay.removeChild(bottomObstacle)
+
           printCurrentScore++
           printBestScore = Math.max(printBestScore, printCurrentScore)
         }
+
         if (
           (obstacleLeft > 110 &&
             obstacleLeft < 280 &&
             birdLeft === 220 &&
             (birdBottom < obstacleBottom + 180 ||
               birdBottom > obstacleBottom + gap - 50)) ||
-          birdBottom <= 0
+          birdBottom === 0
         ) {
-          gameDisplay.removeChild(topObstacle)
-          gameDisplay.removeChild(bottomObstacle)
-          clearInterval(timerId)
-          clearInterval(gameTimerId)
           gameOver()
+          clearInterval(timerId)
         }
       }
       let timerId = setInterval(moveObstacle, 20)
       if (gamePlaying) setTimeout(generateObstacle, 4000)
     }
     generateObstacle()
-  }
 
-  function gameOver() {
-    document.removeEventListener('keyup', control)
-    console.log('Fin du jeu')
-    setupGame()
+    function gameOver() {
+      clearInterval(gameTimerId)
+      gamePlaying = false
+      gameOverScreen.classList.add('visible')
+      document.removeEventListener('keyup', control)
+      document.addEventListener('keyup', (event) => {
+        gameOverScreen.classList.remove('visible')
+
+        setupGame()
+      })
+    }
   }
 
   setupGame()

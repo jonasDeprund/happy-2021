@@ -19,14 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let printCurrentScore = 0
   let printBestScore = 0
 
+  // Audio
+  const scoreAudio = new Audio('./sound/win.wav')
+  const looseAudio = new Audio('./sound/loose.wav')
+
   //SETTUP
 
-  document.addEventListener('keyup', (event) => {
+  document.addEventListener('keydown', (e) => {
     if (event.keyCode === 13) {
       if (gamePlaying === true) {
         setupScreen.classList.remove('visible')
-        document.removeEventListener('keyup', event)
         playGame()
+        this.removeEventListener('keydown', e)
       }
     }
   })
@@ -96,12 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
         bottomObstacle.style.left = obstacleLeft + 'px'
 
         if (obstacleLeft <= 0) {
+          printCurrentScore++
+          printBestScore = Math.max(printBestScore, printCurrentScore)
+          scoreAudio.play()
+
           clearInterval(timerId)
           gameDisplay.removeChild(topObstacle)
           gameDisplay.removeChild(bottomObstacle)
-
-          printCurrentScore++
-          printBestScore = Math.max(printBestScore, printCurrentScore)
         }
 
         if (
@@ -112,6 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
               birdBottom > obstacleBottom + gap - 50)) ||
           birdBottom === 0
         ) {
+          looseAudio.play()
+
           gameOver()
           clearInterval(timerId)
           gameDisplay.removeChild(topObstacle)

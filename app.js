@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const bestScore = document.querySelector('.bestscore')
   const setupScreen = document.querySelector('.setup-screen')
   const gameOverScreen = document.querySelector('.gameover-screen')
+  const startButton = document.querySelector('button')
 
   // Initialise elements
   let birdLeft = 220
@@ -25,19 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //SETTUP
 
-  document.addEventListener('keydown', (e) => {
-    if (event.keyCode === 13) {
-      if (gamePlaying === true) {
-        setupScreen.classList.remove('visible')
-        playGame()
-        this.removeEventListener('keydown', e)
-      }
-    }
+  document.addEventListener('click', function () {
+    setupScreen.classList.remove('visible')
+    playGame()
   })
 
   // GAME
   function setupGame() {
-    gameOverScreen.classList.remove('visible')
     setupScreen.classList.add('visible')
     bird.style.bottom = 320 + 'px'
     bird.style.left = 475 + 'px'
@@ -82,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
         bottomObstacle.classList.add('bottom_obstacle')
 
         currentScore.innerHTML = `Score actuel ${printCurrentScore}`
-        bestScore.innerHTML = `Meilleur score ${printBestScore}`
       }
 
       gameDisplay.appendChild(topObstacle)
@@ -101,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (obstacleLeft <= 0) {
           printCurrentScore++
-          printBestScore = Math.max(printBestScore, printCurrentScore)
           scoreAudio.play()
 
           clearInterval(timerId)
@@ -118,29 +111,31 @@ document.addEventListener('DOMContentLoaded', () => {
           birdBottom === 0
         ) {
           looseAudio.play()
-
-          gameOver()
           clearInterval(timerId)
           gameDisplay.removeChild(topObstacle)
           gameDisplay.removeChild(bottomObstacle)
+
+          gameOver()
+          clearTimeout(generateObstacle)
         }
       }
       let timerId = setInterval(moveObstacle, 20)
-      if (gamePlaying) setTimeout(generateObstacle, 4000)
+      if (gamePlaying === true) {
+        setTimeout(generateObstacle, 4000)
+      } else {
+        clearTimeout(generateObstacle)
+      }
     }
     generateObstacle()
-
     function gameOver() {
+      clearTimeout(generateObstacle)
+      gamePlaying === false
       clearInterval(gameTimerId)
-      gamePlaying = false
+      console.log(gameOverScreen)
       gameOverScreen.classList.add('visible')
       document.removeEventListener('keyup', control)
-      document.addEventListener('keyup', (event) => {
-        gameOverScreen.classList.remove('visible')
-        setupGame()
-      })
+      clearTimeout(generateObstacle)
     }
   }
-
   setupGame()
 })
